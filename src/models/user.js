@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        enum : {
+            values : ["male", "female", "others"],
+            message : `{VALUE} is not a valid gender type`
+        },
         validate(value) {
             if (!["male", "female", "others"].includes(value)) {
                 throw new Error("Gender data is not valid")
@@ -67,6 +71,10 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+// Creation of Compound Index
+userSchema.index({firstName : 1, lastName : 1})
+
 userSchema.methods.getJWT = async function () {
     const user = this;
     const token = await jwt.sign({ _id: user._id }, "DEV@Tinder$798", {
