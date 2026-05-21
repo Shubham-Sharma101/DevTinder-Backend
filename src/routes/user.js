@@ -16,7 +16,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
     }).populate("fromUserId", USER_SAFE_DATA);
 
     res.json({
-      message: "Data fetched Successfully",
+      message: "Data of all pending connection requests fetched Successfully...",
       data: connectionRequests,
     });
   } catch (err) {
