@@ -3,7 +3,7 @@ const requestRouter = express.Router();
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
-
+const sendEmail = require("../utils/sendEmail");
 
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -45,6 +45,10 @@ requestRouter.post(
       });
 
       const data = await connectionRequest.save();
+      const emailRes = await sendEmail.run(
+        "A new friend from",
+        req.user.firstName + " is " + status + " in " + toUser.firstName,
+      );
 
       res.json({
         message:
@@ -76,7 +80,9 @@ requestRouter.post(
         status: "interested",
       });
       if (!connectionRequest) {
-        return res.status(404).json({ message: "Connection request not found!" });
+        return res
+          .status(404)
+          .json({ message: "Connection request not found!" });
       }
       connectionRequest.status = status;
       const data = await connectionRequest.save();
