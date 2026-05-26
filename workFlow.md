@@ -146,7 +146,7 @@ skip = (page-1)*limit;
     listen 80;
     server_name your_domain_or_ec2_ip;
 
-    location / {
+    location /api/ {
         proxy_pass http://localhost:3000/;
 
         proxy_http_version 1.1;
@@ -162,3 +162,24 @@ skip = (page-1)*limit;
     }
 } -->
 <!-- Restart Nginx -->
+
+<!-- 
+# Commands in Nginx File
+
+| Action   | Shortcut |
+| -------- | -------- |
+| Save     | Ctrl + O |
+| Exit     | Ctrl + X |
+| Undo     | Alt + U  |
+| Redo     | Alt + E  |
+| Cut line | Ctrl + K |
+| Paste    | Ctrl + U |
+| Search   | Ctrl + W | 
+-->
+<!-- 
+After doing the changes
+pm2 delete all
+pm2 start npm --name backend --cwd ~/DevTinder-Backend -- start
+pm2 save
+pm2 startup 
+-->
