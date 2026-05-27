@@ -4,7 +4,6 @@ const sendEmail = require("./sendEmail");
 const ConnectionRequestModel = require("../models/connectionRequest");
 
 cron.schedule("0 8 * * *", async () => {
-  // Send emails to all people who get requests the previous day
   try {
     const yesterday = subDay(new Date(), 1);
 
