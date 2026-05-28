@@ -184,3 +184,8 @@ pm2 start npm --name backend --cwd ~/DevTinder-Backend -- start
 pm2 save
 pm2 startup 
 -->
+
+<!-- Removed Files that was committed earlier, it stays in the repo until removed from the index. -->
+<!-- git rm --cached .env
+git commit -m "Stop tracking .env"
+git push -->
