@@ -38,25 +38,26 @@ const createSendEmailCommand = (toAddress, fromAddress,subject,body) => {
   });
 };
 
-const run = async (subject,body) => {
-  const sendEmailCommand = createSendEmailCommand(
-    "recipient@example.com",
-    "sender@example.com",
-    subject,
-    body
-  );
+// const run = async (subject,body) => {
+//   const sendEmailCommand = createSendEmailCommand(
+//     "recipient@example.com",
+//     "sender@example.com",
+//     subject,
+//     body
+//   );
 
-  try {
-    return await sesClient.send(sendEmailCommand);
-  } catch (caught) {
-    if (caught instanceof Error && caught.name === "MessageRejected") {
-      /** @type { import('@aws-sdk/client-ses').MessageRejected} */
-      const messageRejectedError = caught;
-      return messageRejectedError;
-    }
-    throw caught;
-  }
-};
+//   try {
+//     return await sesClient.send(sendEmailCommand);
+//   } catch (caught) {
+//     if (caught instanceof Error && caught.name === "MessageRejected") {
+//       /** @type { import('@aws-sdk/client-ses').MessageRejected} */
+//       const messageRejectedError = caught;
+//       return messageRejectedError;
+//     }
+//     throw caught;
+//   }
+// };
 
 // snippet-end:[ses.JavaScript.email.sendEmailV3]
+const run = async () => null;
 module.exports = { run };
