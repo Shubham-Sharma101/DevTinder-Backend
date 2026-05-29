@@ -7,6 +7,7 @@ const { membershipAmount } = require("../utils/constants");
 const {
   validateWebhooSignature,
 } = require("razorpay/dist/utils/razorpay-utils");
+const User = require("../models/user");
 
 payementRouter.post("/payment/create", userAuth, async (req, res) => {
   try {
@@ -55,21 +56,27 @@ payementRouter.post("/payment/create", userAuth, async (req, res) => {
 
 payementRouter.post("/payment/webhook", async (req, res) => {
   try {
-    const webhookSignature = req.headers["X-Razorpay-Signature"]
+    const webhookSignature = req.headers["X-Razorpay-Signature"];
     const isWebhookValid = validateWebhooSignature(
       JSON.stringify(req.body),
       webhookSignature,
       process.env.RAZORPAY_WEBHOOK_SECRET,
     );
-    if(!isWebhookValid){
-      return res.status(400).json({msg : "webhook signature is invalid"})
+    if (!isWebhookValid) {
+      return res.status(400).json({ msg: "webhook signature is invalid" });
     }
-    if(req.body === "payment.captured"){
-
-    }
-    if(req.body === "payment.failed"){
-      
-    }
+    const paymentDetails = req.body.payload.entity;
+    const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
+    payment.status = paymentDetails.status;
+    await payment.save();
+    const user = await User.findOne({ _id: payment.userId });
+    user.isPremium = true;
+    user.membershipType = payment.notes.membershipType;
+    await user.save();
+    // if (req.body === "payment.captured") {
+    // }
+    // if (req.body === "payment.failed") {
+    // }
   } catch (err) {
     console.error(err);
     res.status(500).json({
